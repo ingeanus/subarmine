@@ -25,11 +25,13 @@ def torpedo_velocity (torpedo_name):
     return torpedo_speed[torpedo_name]
     
 
-def gyro_calculate(gyro_box, impact_angle, torpedo_v, bearing_angle, bow_angle, target_v):
+def gyro_calculate(gyro_box, impact_dial, torpedo_v, bearing_angle, bow_angle, target_v):
     defl = math.asin( (float(target_v) / float(torpedo_v)) * math.sin( math.radians(float(bow_angle)) ) )
     defl = round(math.degrees(defl),2)
     print(f"Deflection Angle: {defl}")
+    gyro_box.delete(0, END)
     gyro_box.insert(0, str(float(bearing_angle) - defl))
+    impact_dial.set(float(bow_angle) + defl)
 
 
 # == Element Setups ==
@@ -69,7 +71,7 @@ periscope = Button(master=root, text="Periscope Slaving")
 
 gyro_lab = Label(master=root, text="Gyro")
 gyro_box = Entry(root)
-gyro_button = Button(master=root, text="Calculate", command=lambda: gyro_calculate(gyro_box, impact_dial.value, torpedo_velocity(torpedo_var.get()), bearing_angle_box.get(), bow_angle_box.get(), target_v_box.get()))
+gyro_button = Button(master=root, text="Calculate", command=lambda: gyro_calculate(gyro_box, impact_dial, torpedo_velocity(torpedo_var.get()), bearing_angle_box.get(), bow_angle_box.get(), target_v_box.get()))
 
 # == Layouts ==
 left_dial.grid(row=0, column=1, rowspan=4, pady=5)
